@@ -5,7 +5,7 @@
 		"build:server": "lerna run build --scope @realsync/server --stream",
 		"build:react": "lerna run build --scope @realsync/server --stream",
 		"run-example": "yarn build && node example/server.js",
-		"publish": "lerna run build"
+		"prepublish": "lerna run build"
 	},
 	"devDependencies": {
 		"gulp": "^4.0.2",
