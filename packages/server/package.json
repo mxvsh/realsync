@@ -24,6 +24,8 @@
 		"express": "^4.17.1",
 		"socket.io": "^4.2.0"
 	},
-	"access": "public",
+	"publishConfig": {
+		"access": "public"
+	},
 	"gitHead": "d241d02d7e3ef5ae626fac88a40d751d0ec99497"
 }

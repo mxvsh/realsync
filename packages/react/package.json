@@ -19,6 +19,8 @@
 		"ts-loader": "^9.2.5",
 		"typescript": "^4.4.3"
 	},
-	"access": "public",
+	"publishConfig": {
+		"access": "public"
+	},
 	"gitHead": "d241d02d7e3ef5ae626fac88a40d751d0ec99497"
 }
