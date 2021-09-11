@@ -5,6 +5,7 @@
 	"version": "0.0.3",
 	"main": "lib/index.js",
 	"license": "MIT",
+	"private": false,
 	"scripts": {
 		"build": "tsc -p ."
 	},
@@ -18,5 +19,6 @@
 		"ts-loader": "^9.2.5",
 		"typescript": "^4.4.3"
 	},
-	"access": "public"
+	"access": "public",
+	"gitHead": "d241d02d7e3ef5ae626fac88a40d751d0ec99497"
 }
