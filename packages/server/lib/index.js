@@ -65,6 +65,7 @@ var RealSync = /** @class */ (function () {
                 origin: origin,
             },
         });
+        this.io.setMaxListeners(0);
         this.io.on('connection', function (socket) {
             _this.handler(socket);
         });

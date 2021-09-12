@@ -33,6 +33,8 @@ class RealSync {
 			},
 		})
 
+		this.io.setMaxListeners(0)
+
 		this.io.on('connection', (socket) => {
 			this.handler(socket)
 		})
