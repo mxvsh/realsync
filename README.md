@@ -10,50 +10,50 @@
 Here is a sample code for your Server, you can use Express if you want.
 ```javascript
 const http = require('http')
-
 const app = http.createServer()
-
 const { RealSync } = require('../packages/server/lib')
 
 const realsync = new RealSync(app, '*')
 
-function sleep(ms) {
-	return new Promise((resolve) => setTimeout(resolve, ms))
-}
+realsync.register('profile/setup', async (client) => {
+    const firstName = await client.run('profile/firstname')
+    const lastName = await client.run('profile/lastname')
 
-realsync.register('add', async (a, b) => {
-	const sum = a + b
-	
-	// Sleep 2 seconds, then return the answer [async]
-	await sleep(2000)
-	
-	return 'sum = ' + sum
-
+    return { firstName, lastName }
 })
 
 app.listen(8080, () => {
-	console.log('8080')
+    console.log('8080')
 })
 ```
 
 ### Client
 ```js
-// React Example 
 import { RealSync } from '@realsync/react'
-
 const realsync = new RealSync('http://localhost:8080')
 
 function App() {
-	const Sum = async () => {
-		const sum = await realsync.service('add', [2, 3])
-		console.log(sum)
-	}
-	return (
-	<div>
-		<button onClick={Sum}>Sum</button>
-	</div>
-	)
-}
+    useEffect(() => {
+        // this will register services
 
-export default App
+        realsync.register('profile/firstname', () => {
+            return prompt('Enter first name')
+        })
+
+        realsync.register('profile/lastname', () => {
+            return prompt('Enter last name')
+        })
+    }, [])
+
+    const Start = async () => {
+        const profile = await realsync.service('profile/setup')
+        console.log('profile', profile)
+    }
+
+    return (
+        <div>
+            <button onClick={Start}>Start</button>
+        </div>
+    )
+}
 ```
