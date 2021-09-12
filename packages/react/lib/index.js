@@ -63,7 +63,9 @@ var socket_io_client_1 = __importDefault(require("socket.io-client"));
 var shortid = __importStar(require("shortid"));
 var RealSync = /** @class */ (function () {
     function RealSync(host) {
+        this.services = [];
         this.socket = (0, socket_io_client_1.default)(host);
+        this.handler();
     }
     RealSync.prototype.service = function (name, args) {
         return __awaiter(this, void 0, void 0, function () {
@@ -79,6 +81,32 @@ var RealSync = /** @class */ (function () {
                     })];
             });
         });
+    };
+    RealSync.prototype.handler = function () {
+        var _this = this;
+        this.socket.on('rs-run', function (data) { return __awaiter(_this, void 0, void 0, function () {
+            var name, key, _service, response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        name = data.name, key = data.key;
+                        _service = this.services.find(function (service) { return service.name === name; });
+                        if (!_service) return [3 /*break*/, 2];
+                        return [4 /*yield*/, _service.handler()];
+                    case 1:
+                        response = _a.sent();
+                        this.socket.emit('rs-answer', {
+                            key: key,
+                            response: response,
+                        });
+                        _a.label = 2;
+                    case 2: return [2 /*return*/];
+                }
+            });
+        }); });
+    };
+    RealSync.prototype.register = function (name, handler) {
+        this.services.push({ name: name, handler: handler });
     };
     return RealSync;
 }());

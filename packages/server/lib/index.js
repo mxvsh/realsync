@@ -35,12 +35,22 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RealSync = void 0;
 var socket_io_1 = __importDefault(require("socket.io"));
+var shortid_1 = __importDefault(require("shortid"));
 var RealSync = /** @class */ (function () {
     /**
      * @param server HTTP Server instance
@@ -60,10 +70,39 @@ var RealSync = /** @class */ (function () {
         });
     }
     RealSync.prototype.register = function (name, handler) {
-        this.services.push({ name: name, handler: handler });
+        this.services.push({
+            name: name,
+            handler: handler,
+        });
     };
     RealSync.prototype.handler = function (socket) {
         var _this = this;
+        var client = {
+            __socket: socket,
+            // run a service on client side and wait for response
+            run: function (name, args) { return __awaiter(_this, void 0, void 0, function () {
+                var __id, __key;
+                return __generator(this, function (_a) {
+                    __id = shortid_1.default.generate();
+                    __key = __id + "-" + name;
+                    socket.emit('rs-run', {
+                        key: __key,
+                        name: name,
+                        args: args,
+                    });
+                    return [2 /*return*/, new Promise(function (resolve) {
+                            socket.on('rs-answer', function (data) {
+                                var key = data.key, response = data.response;
+                                console.log('__key', __key);
+                                console.log('key', key);
+                                if (key == __key) {
+                                    resolve(response);
+                                }
+                            });
+                        })];
+                });
+            }); },
+        };
         socket.on('rs-service', function (data) { return __awaiter(_this, void 0, void 0, function () {
             var serviceName, args, __id, service, key, response, e_1;
             return __generator(this, function (_a) {
@@ -74,17 +113,25 @@ var RealSync = /** @class */ (function () {
                         key = "rs-service-" + __id;
                         _a.label = 1;
                     case 1:
-                        _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, (service === null || service === void 0 ? void 0 : service.handler.apply(service, args))];
+                        _a.trys.push([1, 6, , 7]);
+                        response = void 0;
+                        if (!Array.isArray(args)) return [3 /*break*/, 3];
+                        return [4 /*yield*/, (service === null || service === void 0 ? void 0 : service.handler.apply(service, __spreadArray([client], args, false)))];
                     case 2:
                         response = _a.sent();
+                        return [3 /*break*/, 5];
+                    case 3: return [4 /*yield*/, (service === null || service === void 0 ? void 0 : service.handler(client, args))];
+                    case 4:
+                        response = _a.sent();
+                        _a.label = 5;
+                    case 5:
                         socket.emit(key + "-resolve", response);
-                        return [3 /*break*/, 4];
-                    case 3:
+                        return [3 /*break*/, 7];
+                    case 6:
                         e_1 = _a.sent();
                         socket.emit(key + "-reject", e_1.toString());
-                        return [3 /*break*/, 4];
-                    case 4: return [2 /*return*/];
+                        return [3 /*break*/, 7];
+                    case 7: return [2 /*return*/];
                 }
             });
         }); });
