@@ -94,4 +94,4 @@ class RealSync {
 	}
 }
 
-export { RealSync }
+export { RealSync, ServiceHandler }
