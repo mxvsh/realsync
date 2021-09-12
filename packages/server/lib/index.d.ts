@@ -1,12 +1,17 @@
 import SocketIO from 'socket.io';
-interface Client {
+export interface Client {
     __socket: SocketIO.Socket;
     run: (q: string, args: any) => Promise<any>;
 }
-declare type ServiceHandler = (client: Client, ...args: any) => any;
-interface Service {
+export declare type ServiceHandler = (client: Client, ...args: any) => any;
+export interface Service {
     name: String;
     handler: ServiceHandler;
+}
+export interface SocketService {
+    service: string;
+    args: String | Number | any[] | any;
+    __id: string;
 }
 declare class RealSync {
     private io;

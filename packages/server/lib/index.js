@@ -93,8 +93,6 @@ var RealSync = /** @class */ (function () {
                     return [2 /*return*/, new Promise(function (resolve) {
                             socket.on('rs-answer', function (data) {
                                 var key = data.key, response = data.response;
-                                console.log('__key', __key);
-                                console.log('key', key);
                                 if (key == __key) {
                                     resolve(response);
                                 }
