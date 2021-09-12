@@ -1,18 +1,18 @@
 import SocketIO from 'socket.io'
 import shortid from 'shortid'
 
-interface Client {
+export interface Client {
 	__socket: SocketIO.Socket
 	run: (q: string, args: any) => Promise<any>
 }
 
-type ServiceHandler = (client: Client, ...args: any) => any
-interface Service {
+export type ServiceHandler = (client: Client, ...args: any) => any
+export interface Service {
 	name: String
 	handler: ServiceHandler
 }
 
-interface SocketService {
+export interface SocketService {
 	service: string
 	args: String | Number | any[] | any
 	__id: string
@@ -94,4 +94,4 @@ class RealSync {
 	}
 }
 
-export { RealSync, ServiceHandler }
+export { RealSync }
