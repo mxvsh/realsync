@@ -29,10 +29,15 @@ class RealSync {
 
 	handler() {
 		this.socket.on('rs-run', async (data) => {
-			const { name, key } = data
+			const { name, key, args } = data
 			const _service = this.services.find((service) => service.name === name)
 			if (_service) {
-				const response = await _service.handler()
+				let response
+				if (Array.isArray(args)) {
+					response = await _service.handler(...args)
+				} else {
+					response = await _service.handler(args)
+				}
 				this.socket.emit('rs-answer', {
 					key,
 					response,

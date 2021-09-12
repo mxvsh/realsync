@@ -3,7 +3,7 @@ import shortid from 'shortid'
 
 export interface Client {
 	__socket: SocketIO.Socket
-	run: (q: string, args: any) => Promise<any>
+	run: (q: string, args?: any) => Promise<any>
 }
 
 export type ServiceHandler = (client: Client, ...args: any) => any

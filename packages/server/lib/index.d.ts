@@ -1,7 +1,7 @@
 import SocketIO from 'socket.io';
 export interface Client {
     __socket: SocketIO.Socket;
-    run: (q: string, args: any) => Promise<any>;
+    run: (q: string, args?: any) => Promise<any>;
 }
 export declare type ServiceHandler = (client: Client, ...args: any) => any;
 export interface Service {
