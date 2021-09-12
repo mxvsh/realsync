@@ -2,7 +2,7 @@
 	"name": "@realsync/server",
 	"description": "RealSync Server",
 	"homepage": "https://github.com/xencodes/realsync",
-	"version": "2.1.0",
+	"version": "2.1.2",
 	"main": "lib/index.js",
 	"license": "MIT",
 	"private": false,
