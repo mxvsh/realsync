@@ -85,22 +85,30 @@ var RealSync = /** @class */ (function () {
     RealSync.prototype.handler = function () {
         var _this = this;
         this.socket.on('rs-run', function (data) { return __awaiter(_this, void 0, void 0, function () {
-            var name, key, _service, response;
+            var name, key, args, _service, response;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        name = data.name, key = data.key;
+                        name = data.name, key = data.key, args = data.args;
                         _service = this.services.find(function (service) { return service.name === name; });
-                        if (!_service) return [3 /*break*/, 2];
-                        return [4 /*yield*/, _service.handler()];
+                        if (!_service) return [3 /*break*/, 5];
+                        response = void 0;
+                        if (!Array.isArray(args)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, _service.handler.apply(_service, args)];
                     case 1:
                         response = _a.sent();
+                        return [3 /*break*/, 4];
+                    case 2: return [4 /*yield*/, _service.handler(args)];
+                    case 3:
+                        response = _a.sent();
+                        _a.label = 4;
+                    case 4:
                         this.socket.emit('rs-answer', {
                             key: key,
                             response: response,
                         });
-                        _a.label = 2;
-                    case 2: return [2 /*return*/];
+                        _a.label = 5;
+                    case 5: return [2 /*return*/];
                 }
             });
         }); });
