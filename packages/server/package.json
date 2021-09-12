@@ -3,7 +3,7 @@
 	"description": "RealSync Server",
 	"homepage": "https://github.com/xencodes/realsync",
 	"version": "1.0.0",
-	"main": "dist/index.js",
+	"main": "lib/index.js",
 	"license": "MIT",
 	"private": false,
 	"scripts": {
