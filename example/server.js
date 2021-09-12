@@ -6,16 +6,11 @@ const { RealSync } = require('../packages/server/lib')
 
 const realsync = new RealSync(app, '*')
 
-function sleep(ms) {
-	return new Promise((resolve) => setTimeout(resolve, ms))
-}
+realsync.register('profile/setup', async (client) => {
+	const firstName = await client.run('profile/firstname')
+	const lastName = await client.run('profile/lastname')
 
-realsync.register('add', async (a, b) => {
-	const sum = a + b
-
-	// Sleep 2 seconds, then return the answer [async]
-	await sleep(2000)
-	return 'sum = ' + sum
+	return { firstName, lastName }
 })
 
 app.listen(8080, () => {
