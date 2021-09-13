@@ -15,7 +15,7 @@ class RealSync {
 		this.handler()
 	}
 
-	async service(name: string, args: any) {
+	service(name: string, args: any) {
 		const id = shortid.generate()
 		const key = `rs-service-${id}`
 
